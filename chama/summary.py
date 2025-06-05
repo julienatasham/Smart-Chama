@@ -1,14 +1,16 @@
+# chama/summary.py
 import streamlit as st
 
-def show_summary(chama_members):
-    """
-    Shows member list and total contributions.
-    """
+def show_summary(chama_members, goal):
     if not chama_members:
         st.info("No members added yet.")
         return
-    total = 0
-    for member in chama_members:
-        st.write(f"- {member['name']}: KES {member['contribution']}")
-        total += member['contribution']
-    st.markdown(f"### 💰 Total Contributions: KES {total}")
+
+    total = sum(m['contribution'] for m in chama_members)
+    st.write("### 💰 Total Contributions")
+    st.success(f"**KES {total:,.2f}**")
+
+    if goal > 0:
+        progress = min(total / goal, 1.0)
+        st.progress(progress)
+        st.write(f"🎯 Goal: KES {goal:,.0f} | Progress: {progress*100:.1f}%")
