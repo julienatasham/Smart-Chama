@@ -1,4 +1,3 @@
-# dashboard.py
 import streamlit as st
 from chama.chama import load_chamas_for_user, create_chama_for_user
 
@@ -14,7 +13,7 @@ def show_dashboard(email):
             st.markdown(f"- 👥 Members: {len(chama['members'])}")
             st.markdown(f"- 💰 Transactions: {len(chama['transactions'])}")
     else:
-        st.info("You haven't created any Chamas yet.")
+        st.info
 
     st.markdown("---")
 
