@@ -32,7 +32,7 @@ while True:
     choice = input("Choose an option (1-3): ")
 
     if choice == '1':
-        add_member()
+        add_member(chama_members)
     elif choice == '2':
         show_summary()
     elif choice == '3':
