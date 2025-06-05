@@ -28,11 +28,14 @@ def check_password(password: str, hashed: str) -> bool:
     return bcrypt.checkpw(password.encode(), hashed.encode())
 
 # Register a new user (returns True if successful, False if email already exists)
-def register_user(email: str, password: str) -> bool:
+def signup_user(name, email, password):
     users = load_users()
     if email in users:
-        return False  # Email already registered
-    users[email] = hash_password(password)
+        return False  # User already exists
+    users[email] = {
+        "name": name,
+        "password": hash_password(password)
+    }
     save_users(users)
     return True
 
@@ -41,5 +44,5 @@ def login_user(email: str, password: str) -> bool:
     users = load_users()
     if email not in users:
         return False
-    hashed = users[email]
-    return check_password(password, hashed)
+    hashed = hash_passwords (password)
+    return email in users and users[email]["password"]== hashed
