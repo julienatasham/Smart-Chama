@@ -6,11 +6,7 @@ def show_dashboard(email):
     st.title("Smart Chama")
     user_email=st.session_state.get('use_email','User')
     st.success(f"Welcome , {user_email}!")
-
-    if st.button("Logout"):
-        st.session_state['logged_in']= False
-        st.experimental_rerun()
-
+    
     chamas = load_chamas_for_user(email)
 
     if chamas:
