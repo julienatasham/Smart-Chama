@@ -1,69 +1,25 @@
-import json
-import os
-
-CHARMERS_FILE = 'chamas.json'
-
-def load_chama():
-    """Load the list of chama (chamas) from JSON file."""
-    if not os.path.exists(CHAMA_FILE):
-        return []
-    with open(CHAMA_FILE, 'r') as f:
-        return json.load(f)
-
-def save_chama(chama):
-    """Save the list of chama (chamas) back to JSON file."""
-    with open(CHAMA_FILE, 'w') as f:
-        json.dump(chama, f, indent=4)
-
-def get_next_id(chama):
-    """Get the next unique ID for a new charmer."""
-    if not chama:
-        return 1
-    return max(chama['id'] for chama in charmers) + 1
-
-def add_chama(name, details):
-    """Add a new chama to the list and save."""
-    chama = load_chama()
-    new_id = get_next_id(chama)
-    new_chama = {
-        "id": new_id,
-        "name": name,
-        "details": details
-    }
-    chama.append(new_chama)
-    save_chama(chama)
-    print(f"Chama '{name}' added successfully with ID {new_id}!")
-
-def list_chama():
-    """Print all existing chama."""
-    chama = load_chama()
-    if not chama:
-        print("No chama (chamas) found.")
-        return
-    print("List of Chama (Chamas):")
-    for charmer in chama:
-        print(f"ID: {chama ['id']} | Name: {chama['name']} | Details: {chama['details']}")
-
-def main():
-    print("Welcome to the Chama Management App")
-    while True:
-        print("\nChoose an option:")
-        print("1. List all chama (chamas)")
-        print("2. Add a new chama (chama)")
-        print("3. Exit")
-
-        choice = input("Enter your choice (1/2/3): ").strip()
-        if choice == '1':
-            list_chama()
-        elif choice == '2':
-            name = input("Enter chama name: ").strip()
-            details = input("Enter chama details/info: ").strip()
-            add_chama(name, details)
-        elif choice == '3':
-            print("Goodbye!")
-            break
-        else:
-            print("Invalid choice, please try again.")
-
-if _name_ == "_main_":
-    main()
+{
+  "user1@gmail.com": {
+    "chamas": [
+      {
+        "name": "Chama One",
+        "members": ["Alice", "Bob"],
+        "transactions": []
+      },
+      {
+        "name": "Chama Two",
+        "members": [],
+        "transactions": []
+      }
+    ]
+  },
+  "user2@gmail.com": {
+    "chamas": [
+      {
+        "name": "Sisters Fund",
+        "members": ["Jane"],
+        "transactions": []
+      }
+    ]
+  }
+}
