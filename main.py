@@ -4,6 +4,9 @@ print()
 # Smart-Chama Basic Structure`
 
 from chama import create_chama
+from members import add_member
+from summary import show_summary
+
 # A list to store chama members
 chama_members = []
 def add_member():
@@ -34,7 +37,7 @@ while True:
     if choice == '1':
         add_member(chama_members)
     elif choice == '2':
-        show_summary()
+        show_summary(chama_members)
     elif choice == '3':
         print(f"\n👋 Thanks for using Smart-Chama, {group}!")
         break
