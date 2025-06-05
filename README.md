@@ -1,7 +1,12 @@
-# Smart-Chama
+# Smart Chama Optimization Tool
 
-Smart-Chama is a Streamlit web app designed to empower Kenyan women by helping them manage and optimize their Chama (savings group) contributions easily.
+This Streamlit app helps Chama groups optimize contributions and track members’ payments.
 
+## How to run locally
 
+1. Clone the repo
+2. Create a Python virtual environment
+3. Install dependencies:
 
-
+```bash
+pip install -r requirements.txt
