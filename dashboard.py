@@ -2,8 +2,9 @@
 import streamlit as st
 from chama.chama import load_chamas_for_user, create_chama_for_user
 
-def show_dashboard(email):
+def main():
     st.title("Smart Chama")
+    st.write("Welcome to your dashboard!")
     user_email=st.session_state.get('use_email','User')
     st.success(f"Welcome , {user_email}!")
     
