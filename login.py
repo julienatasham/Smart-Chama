@@ -1,5 +1,11 @@
 
 import streamlit as st
+# Initialize session variables
+if 'logged_in' not in st.session_state:
+    st.session_state['logged_in'] = False
+
+if 'user_email' not in st.session_state:
+    st.session_state['user_email'] = ""
 from dashboard import main as dashboard_main
 from auth import login_user, signup_user
 
