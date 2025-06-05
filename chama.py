@@ -1,7 +1,5 @@
-def create_chama(name):
-    """
-    Receives a Chama group name and returns it.
-    """
-    # Here you could add logic like validation if you want
+def add_member(name, amount, chama_members):
+    if not name or amount <= 0:
+        return
+    chama_members.append({'name': name, 'contribution': amount})
 
-    return name
