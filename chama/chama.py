@@ -1,30 +1,38 @@
 import json
 import os
-from chama.data_handler import load_data, save_data
 
-CHAMA_FILE = 'chama_data.json'
+DATA_FILE = "chama_data.json"
 
-def load_chamas():
-    if not os.path.exists(CHAMA_FILE):
-        return {}
-    return load_data(CHAMA_FILE)
+# Ensure the file exists
+def init_data_file():
+    if not os.path.exists(DATA_FILE):
+        with open(DATA_FILE, "w") as f:
+            json.dump({}, f)
 
-def save_chamas(data):
-    save_data(CHAMA_FILE, data)
+# Load chama data
+def load_data():
+    init_data_file()
+    with open(DATA_FILE, "r") as f:
+        return json.load(f)
 
+# Save chama data
+def save_data(data):
+    with open(DATA_FILE, "w") as f:
+        json.dump(data, f, indent=4)
+
+# Load all chamas for a user
 def load_chamas_for_user(email):
-    data = load_chamas()
-    return data.get(email, [])
+    data = load_data()
+    return data.get(email, {}).get("chamas", [])
 
+# Create a new chama for a user
 def create_chama_for_user(email, chama_name):
-    data = load_chamas()
-    user_chamas = data.get(email, [])
-    new_chama = {
-        "id": len(user_chamas) + 1,
+    data = load_data()
+    if email not in data:
+        data[email] = {"chamas": []}
+    data[email]["chamas"].append({
         "name": chama_name,
         "members": [],
         "transactions": []
-    }
-    user_chamas.append(new_chama)
-    data[email] = user_chamas
-    save_chamas(data)
+    })
+    save_data(data)
