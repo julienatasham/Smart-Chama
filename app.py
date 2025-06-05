@@ -21,3 +21,31 @@ def show_login():
             st.session_state.logged_in = True
             st.session_state.user_email = email
             st.success("Login successful!")
+            st.experimental_rerun()
+        else:
+            st.error("Incorrect email or password.")
+
+# ---------------- REGISTER FORM ----------------
+def show_register():
+    st.title("📝 Register for Smart Chama")
+    email = st.text_input("Email")
+    password = st.text_input("Password", type="password")
+    if st.button("Register"):
+        if register_user(email, password):
+            st.success("Registration successful! Please log in.")
+        else:
+            st.error("Email already registered.")
+
+# ---------------- MAIN ROUTER ----------------
+def main():
+    if st.session_state.logged_in:
+        show_dashboard(st.session_state.user_email)
+    else:
+        menu = st.sidebar.selectbox("Menu", ["Login", "Register"])
+        if menu == "Login":
+            show_login()
+        else:
+            show_register()
+
+if _name_ == "_main_":
+    main()
