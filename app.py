@@ -1,43 +1,63 @@
-# app.py
 import streamlit as st
-from chama import create_chama
-from chama.members import add_member
-from chama.summary import show_summary
-from chama.data_handler import save_data, load_data
+import pandas as pd
 
-# Load data from JSON file
-chama_members = load_data()
+# Custom CSS styles for better design
+st.markdown("""
+<style>
+    .title {
+        font-size: 36px;
+        font-weight: 700;
+        color: #0d6efd;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .highlight-box {
+        background-color: #f0f8ff;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    .footer {
+        font-size: 12px;
+        color: #888;
+        text-align: center;
+        margin-top: 40px;
+    }
+</style>
+""", unsafe_allow_html=True)
 
-# Sidebar
-st.sidebar.title("📌 Smart-Chama Menu")
-group_name = st.sidebar.text_input("Enter your Chama group name", value="My Chama")
-goal = st.sidebar.number_input("Set a savings goal (KES)", min_value=0, value=10000)
+# Title
+st.markdown('<div class="title">Smart Chama Optimization Tool</div>', unsafe_allow_html=True)
 
-# Main Title
-st.title("👩🏾‍🤝‍👩🏿 Smart-Chama: Group Savings Made Easier")
+# Sidebar for inputs
+with st.sidebar:
+    st.header("User Inputs")
+    member_name = st.text_input("Member Name")
+    contribution = st.number_input("Contribution Amount (KES)", min_value=0)
+    month = st.selectbox("Month", options=["January", "February", "March", "April"])
 
-# Add Member Section
-st.header("➕ Add Member")
-with st.form("add_form"):
-    name = st.text_input("Member Name")
-    amount = st.number_input("Contribution (KES)", min_value=0.0, step=100.0)
-    submitted = st.form_submit_button("Add Member")
+# Main layout with two columns
+col1, col2 = st.columns([1, 2])
 
-    if submitted:
-        if name and amount:
-            add_member(chama_members, name, amount)
-            save_data(chama_members)
-            st.success(f"✅ {name} added with KES {amount}")
-        else:
-            st.error("Please enter both name and amount.")
+with col1:
+    st.markdown('<div class="highlight-box">', unsafe_allow_html=True)
+    st.subheader("Summary")
+    if member_name:
+        st.write(f"Member: **{member_name}**")
+        st.write(f"Contribution: **KES {contribution:,}**")
+        st.write(f"Month: **{month}**")
+    else:
+        st.info("Please enter member info on the sidebar.")
+    st.markdown('</div>', unsafe_allow_html=True)
 
-# Show Summary
-st.header("📊 Summary")
-show_summary(chama_members, goal)
+with col2:
+    st.subheader("Contributions Over Time")
+    # Replace with your real data or logic
+    data = pd.DataFrame({
+        "Month": ["January", "February", "March", "April"],
+        "Contribution": [1000, 1500, 1300, 1600]
+    }).set_index("Month")
+    st.bar_chart(data)
 
-# Bar Chart
-if chama_members:
-    st.subheader("📈 Contribution Chart")
-    import pandas as pd
-    df = pd.DataFrame(chama_members)
-    st.bar_chart(data=df, x="name", y="contribution")
+# Footer
+st.markdown('<div class="footer">© 2025 Smart Chama Project</div>', unsafe_allow_html=True)
