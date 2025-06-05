@@ -1,6 +1,6 @@
 
 import streamlit as st
-from dashboard import main as dasgboard_main
+from dashboard import main as dashboard_main
 from auth import login_user, signup_user
 
 st.set_page_config(page_title="Smart Chama", layout="wide")
