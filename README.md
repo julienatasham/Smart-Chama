@@ -1,12 +1,20 @@
-# Smart Chama Optimization Tool
+# Smart Chama App 💰
 
-This Streamlit app helps Chama groups optimize contributions and track members’ payments.
+A simple, secure web app for managing Chamas (savings groups) in Kenya.
 
-## How to run locally
+### Features
+- Secure registration and login with password hashing
+- Create and manage multiple Chamas per user
+- Add members and record transactions
+- Built with Streamlit and JSON storage
 
-1. Clone the repo
-2. Create a Python virtual environment
-3. Install dependencies:
+### Tech Stack
+- Python
+- Streamlit
+- bcrypt
+- JSON for lightweight local storage
 
+### To Run
 ```bash
 pip install -r requirements.txt
+streamlit run app.py
