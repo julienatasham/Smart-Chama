@@ -4,9 +4,9 @@ def show_summary(members_list):
     if not members_list:
         st.info("No members added yet.")
         return
-
-    total = sum(m["contribution"] for m in members_list)
-    for m in members_list:
-        st.write(f"{m['name']}: KES {m['contribution']}")
-    st.subheader(f"💰 Total Contributions: KES {total}")
+    total = 0
+    for member in members_list:
+        st.write(f"- {member['name']}: KES {member['contribution']}")
+        total += member['contribution']
+    st.write(f"💰 Total Contributions: KES {total}")
 
