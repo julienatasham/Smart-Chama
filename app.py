@@ -1,63 +1,101 @@
 import streamlit as st
-import pandas as pd
+from auth import register_user, login_user
+import json
+import os
 
-# Custom CSS styles for better design
-st.markdown("""
-<style>
-    .title {
-        font-size: 36px;
-        font-weight: 700;
-        color: #0d6efd;
-        text-align: center;
-        margin-bottom: 20px;
-    }
-    .highlight-box {
-        background-color: #f0f8ff;
-        border-radius: 10px;
-        padding: 15px;
-        margin-bottom: 20px;
-    }
-    .footer {
-        font-size: 12px;
-        color: #888;
-        text-align: center;
-        margin-top: 40px;
-    }
-</style>
-""", unsafe_allow_html=True)
+CHAMAS_FILE = 'chamas.json'
 
-# Title
-st.markdown('<div class="title">Smart Chama Optimization Tool</div>', unsafe_allow_html=True)
+def load_chamas():
+    if not os.path.exists(CHAMAS_FILE):
+        return []
+    with open(CHAMAS_FILE, 'r') as f:
+        return json.load(f)
 
-# Sidebar for inputs
-with st.sidebar:
-    st.header("User Inputs")
-    member_name = st.text_input("Member Name")
-    contribution = st.number_input("Contribution Amount (KES)", min_value=0)
-    month = st.selectbox("Month", options=["January", "February", "March", "April"])
+def save_chamas(chamas):
+    with open(CHAMAS_FILE, 'w') as f:
+        json.dump(chamas, f, indent=4)
 
-# Main layout with two columns
-col1, col2 = st.columns([1, 2])
+def get_next_id(chamas):
+    if not chamas:
+        return 1
+    return max(chama['id'] for chama in chamas) + 1
 
-with col1:
-    st.markdown('<div class="highlight-box">', unsafe_allow_html=True)
-    st.subheader("Summary")
-    if member_name:
-        st.write(f"Member: **{member_name}**")
-        st.write(f"Contribution: **KES {contribution:,}**")
-        st.write(f"Month: **{month}**")
+def chama_management():
+    st.subheader("Add New Chama")
+    name = st.text_input("Chama Name")
+    details = st.text_area("Chama Details")
+
+    if st.button("Add Chama"):
+        if not name.strip():
+            st.error("Chama name cannot be empty.")
+        else:
+            chamas = load_chamas()
+            new_id = get_next_id(chamas)
+            chamas.append({"id": new_id, "name": name.strip(), "details": details.strip()})
+            save_chamas(chamas)
+            st.success(f"Chama '{name}' added successfully with ID {new_id}!")
+
+    st.subheader("Existing Chamas")
+    chamas = load_chamas()
+    if chamas:
+        for chama in chamas:
+            st.write(f"ID: {chama['id']} | Name: {chama['name']} | Details: {chama['details']}")
     else:
-        st.info("Please enter member info on the sidebar.")
-    st.markdown('</div>', unsafe_allow_html=True)
+        st.info("No chamas found.")
 
-with col2:
-    st.subheader("Contributions Over Time")
-    # Replace with your real data or logic
-    data = pd.DataFrame({
-        "Month": ["January", "February", "March", "April"],
-        "Contribution": [1000, 1500, 1300, 1600]
-    }).set_index("Month")
-    st.bar_chart(data)
+def main():
+    st.title("Chama App with User Login")
 
-# Footer
-st.markdown('<div class="footer">© 2025 Smart Chama Project</div>', unsafe_allow_html=True)
+    if 'logged_in' not in st.session_state:
+        st.session_state.logged_in = False
+        st.session_state.email = ""
+
+    menu = ["Login", "Register"]
+    if st.session_state.logged_in:
+        menu.append("Logout")
+        menu.append("Manage Chamas")
+
+    choice = st.sidebar.selectbox("Menu", menu)
+
+    if choice == "Login":
+        st.subheader("Login")
+        email = st.text_input("Email")
+        password = st.text_input("Password", type="password")
+        if st.button("Login"):
+            if login_user(email, password):
+                st.success(f"Welcome back, {email}!")
+                st.session_state.logged_in = True
+                st.session_state.email = email
+            else:
+                st.error("Invalid email or password")
+
+    elif choice == "Register":
+        st.subheader("Create New Account")
+        email = st.text_input("Email", key="reg_email")
+        password = st.text_input("Password", type="password", key="reg_password")
+        password2 = st.text_input("Confirm Password", type="password", key="reg_password2")
+        if st.button("Register"):
+            if not email or not password or not password2:
+                st.error("Please fill in all fields")
+            elif password != password2:
+                st.error("Passwords do not match")
+            else:
+                if register_user(email, password):
+                    st.success("Registration successful! You can now login.")
+                else:
+                    st.error("Email already registered.")
+
+    elif choice == "Logout":
+        st.session_state.logged_in = False
+        st.session_state.email = ""
+        st.success("You have logged out.")
+
+    elif choice == "Manage Chamas":
+        if st.session_state.logged_in:
+            st.write(f"Logged in as: {st.session_state.email}")
+            chama_management()
+        else:
+            st.error("Please login first.")
+
+if __name__ == "__main__":
+    main()
