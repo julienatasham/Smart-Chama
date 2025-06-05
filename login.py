@@ -1,15 +1,15 @@
 
 import streamlit as st
-from auth import login_user, register_user
-from dashboard import show_dashboard
+from dashboard import main as dasgboard_main
+from auth import login_user, signup_user
 
 st.set_page_config(page_title="Smart Chama", layout="wide")
 
 # Session state setup
 if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False
+    st.session_state [logged_in] = False
 if "user_email" not in st.session_state:
-    st.session_state.user_email = ""
+    st.session_state [user_email] = ""
 
 # ----------- Login Page ------------
 def login_page():
@@ -18,8 +18,8 @@ def login_page():
     password = st.text_input("Password", type="password")
     if st.button("Login"):
         if login_user(email, password):
-            st.session_state.logged_in = True
-            st.session_state.user_email = email
+            st.session_state[logged_in] = True
+            st.session_state [user_email] = email
             st.experimental_rerun()
         else:
             st.error("Incorrect email or password")
@@ -70,6 +70,9 @@ def main():
                 # Possibly auto-login or redirect
             else:
                 st.error("Please fill in all the fields")
+
+        if st.session_state['logged_in']:
+            dashboard_main()
 
 if __name__ == "__main__":
     main()
