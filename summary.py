@@ -1,13 +1,12 @@
-def show_summary(chama_members):
-    print("\n📊 Chama Summary:")
-    total = 0
+import streamlit as st
 
-    if not chama_members:
-        print("No members added yet.")
+def show_summary(members_list):
+    if not members_list:
+        st.info("No members added yet.")
         return
 
-    for member in chama_members:
-        print(f"- {member['name']}: KES {member['contribution']}")
-        total += member['contribution']
+    total = sum(m["contribution"] for m in members_list)
+    for m in members_list:
+        st.write(f"{m['name']}: KES {m['contribution']}")
+    st.subheader(f"💰 Total Contributions: KES {total}")
 
-    print(f"\n💰 Total Contributions: KES {total}")
