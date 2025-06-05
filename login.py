@@ -39,19 +39,38 @@ def register_page():
 import streamlit as st
 
 def main():
-    st.title("Login Page")
+    st.title("Welcome to Smart Chama")
 
-    email = st.text_input("Email")
-    password = st.text_input("Password", type="password")
+    # Step 1: Page selector — lets user choose Login or Sign Up
+    page = st.radio("Choose action", ["Login", "Sign Up"])
 
-    if st.button("Login"):
-        if email and password:
-            # call your auth function, e.g. auth.login_user(email, password)
-            st.success(f"Logged in as {email}")
-            # maybe redirect or show dashboard here
-        else:
-            st.error("Please enter email and password")
-if login_successful:
-    st.session_state['user_email']= email
-if _name_ == "_main_":
+    if page == "Login":
+        # Login page inputs
+        email = st.text_input("Email")
+        password = st.text_input("Password", type="password")
+
+        if st.button("Login"):
+            if email and password:
+                # Your login authentication logic here
+                st.success(f"Logged in as {email}")
+                # Redirect or show dashboard here
+            else:
+                st.error("Please enter email and password")
+
+    elif page == "Sign Up":
+        # Sign Up page inputs
+        name = st.text_input("Your Full Name")
+        email = st.text_input("Email")
+        password = st.text_input("Password", type="password")
+
+        if st.button("Sign Up"):
+            if name and email and password:
+                # Your sign up logic here (e.g., save user, hash password)
+                st.success(f"Account created for {name}!")
+                # Possibly auto-login or redirect
+            else:
+                st.error("Please fill in all the fields")
+
+if __name__ == "__main__":
     main()
+
