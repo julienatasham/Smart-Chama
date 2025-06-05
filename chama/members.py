@@ -1,7 +1,3 @@
-# chama/members.py
-
-def add_member(chama_members, name, amount):
-    chama_members.append({
-        'name': name,
-        'contribution': amount
-    })
+def add_member(chama, member_name):
+    if member_name not in chama['members']:
+        chama['members'].append(member_name)
