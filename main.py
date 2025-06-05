@@ -1,16 +1,11 @@
 print("Welcome to Smart-Chama, saving made easier")
 print("This tool will help Kenyan women manage and optimize Chama Groups.")
 print()
-# Smart-Chama Basic Structure
+# Smart-Chama Basic Structure`
 
+from chama import create_chama
 # A list to store chama members
 chama_members = []
-
-def create_chama():
-    name = input("Enter your Chama group name: ")
-    print(f"\n🎉 Chama '{name}' created successfully!\n")
-    return name
-
 def add_member():
     name = input("Enter member name: ")
     amount = float(input(f"Enter {name}'s contribution amount: "))
