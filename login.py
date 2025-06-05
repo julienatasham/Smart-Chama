@@ -36,15 +36,22 @@ def register_page():
             st.error("Email already exists")
 
 # ----------- Main Router ------------
-def main():
-    if st.session_state.logged_in:
-        show_dashboard(st.session_state.user_email)
-    else:
-        option = st.sidebar.radio("Navigation", ["Login", "Register"])
-        if option == "Login":
-            login_page()
-        else:
-            register_page()
+import streamlit as st
 
+def main():
+    st.title("Login Page")
+
+    email = st.text_input("Email")
+    password = st.text_input("Password", type="password")
+
+    if st.button("Login"):
+        if email and password:
+            # call your auth function, e.g. auth.login_user(email, password)
+            st.success(f"Logged in as {email}")
+            # maybe redirect or show dashboard here
+        else:
+            st.error("Please enter email and password")
+if login_successful:
+    st.session_state['user_email']= email
 if _name_ == "_main_":
     main()
