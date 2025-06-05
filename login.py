@@ -1,18 +1,18 @@
+
 import streamlit as st
 from auth import login_user, register_user
 from dashboard import show_dashboard
 
-# Set page title
 st.set_page_config(page_title="Smart Chama", layout="wide")
 
-# Initialize session state
+# Session state setup
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 if "user_email" not in st.session_state:
     st.session_state.user_email = ""
 
-# ---------------- LOGIN FORM ----------------
-def show_login():
+# ----------- Login Page ------------
+def login_page():
     st.title("🔐 Login to Smart Chama")
     email = st.text_input("Email")
     password = st.text_input("Password", type="password")
@@ -20,32 +20,31 @@ def show_login():
         if login_user(email, password):
             st.session_state.logged_in = True
             st.session_state.user_email = email
-            st.success("Login successful!")
             st.experimental_rerun()
         else:
-            st.error("Incorrect email or password.")
+            st.error("Incorrect email or password")
 
-# ---------------- REGISTER FORM ----------------
-def show_register():
-    st.title("📝 Register for Smart Chama")
+# ----------- Registration Page ------------
+def register_page():
+    st.title("📝 Register New Account")
     email = st.text_input("Email")
     password = st.text_input("Password", type="password")
     if st.button("Register"):
         if register_user(email, password):
-            st.success("Registration successful! Please log in.")
+            st.success("Registered! Please login.")
         else:
-            st.error("Email already registered.")
+            st.error("Email already exists")
 
-# ---------------- MAIN ROUTER ----------------
+# ----------- Main Router ------------
 def main():
     if st.session_state.logged_in:
         show_dashboard(st.session_state.user_email)
     else:
-        menu = st.sidebar.selectbox("Menu", ["Login", "Register"])
-        if menu == "Login":
-            show_login()
+        option = st.sidebar.radio("Navigation", ["Login", "Register"])
+        if option == "Login":
+            login_page()
         else:
-            show_register()
+            register_page()
 
 if _name_ == "_main_":
     main()
